@@ -2,11 +2,7 @@
 
 DOMAIN='example.com'
 PASSWD='hogehoge'
-<<<<<<< HEAD
-HOST='*'
-=======
 HOST='ddns'
->>>>>>> b762667... Update value_ddns.sh
 
 DIR=$(dirname $0)
 
