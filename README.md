@@ -5,3 +5,6 @@
 
 ### portcheck.py
 特定のポートに対してTCP/UDPを投げるやつ
+
+### ymnolimit.py
+305ZTをアレするやつ
