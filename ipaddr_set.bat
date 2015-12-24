@@ -12,13 +12,18 @@ echo "次の情報で設定します。"
 
 echo ***********************
 echo IF  =%INTERFACE%
-echo ip  =%IPADDR
+echo ip  =%IPADDR%
 echo MASK=%MASK%
 echo GW  =%GW%
 echo ***********************
 echo .
+
 pause
 
-netsh interface ipv4 set address name=%INTERFACE% static %IPADDR% %MASK% %GW% 1
+if "%GW%" == "" (
+    netsh interface ipv4 set address name=%INTERFACE% static %IPADDR% %MASK%
+) else (
+    netsh interface ipv4 set address name=%INTERFACE% static %IPADDR% %MASK% %GW% 1
+)
 
 :end
