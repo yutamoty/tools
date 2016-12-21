@@ -3,6 +3,9 @@
 ### value_ddns.sh
 バリュードメインのDDNS更新するやつ
 
+### sslmatch.sh
+証明書と秘密鍵の組み合わせが正しいか比較するやつ
+
 ### portcheck.py
 特定のポートに対してTCP/UDPを投げるやつ
 
