@@ -1,0 +1,83 @@
+;接続先ホスト 適切に変更
+HOSTADDR = 'xxx.xxx.xxx.xxx'
+ 
+;ユーザ名 適切に変更
+USERNAME = 'xxxxx'
+ 
+;パスワード設定 適切に変更
+PASSWORD = 'xxxxx'
+ 
+wait_str = '.*\]\$'
+ 
+;接続コマンド作成
+LOGIN = '/V '
+strconcat LOGIN HOSTADDR
+strconcat LOGIN ':22 /ssh /2 /auth=password /user='
+strconcat LOGIN USERNAME 
+strconcat LOGIN ' /passwd='
+strconcat LOGIN PASSWORD
+  
+;接続 
+connect LOGIN
+
+;; 接続判定1（接続出来ない場合はメッセージを表示しマクロ終了）
+if result <> 2 then
+    messagebox 'サーバに接続できませんでした' 'エラー'
+    end
+endif
+
+;; 接続判定2（接続して10秒以内にプロンプトが表示されない場合もマクロ終了）
+timeout = 10
+waitregex wait_str
+if result = 0 then
+    messagebox 'サーバに接続できませんでした' 'エラー'
+    end
+endif
+
+;IPアドレス入力
+inputbox '疎通確認を行うIPアドレスを入力してください' 'IPアドレス入力'
+IPADDR = inputstr
+
+strlen IPADDR
+if result = 0 then 
+    messagebox 'IPアドレスが入力されていません' 'エラー'
+    sendln 'exit'
+    end
+endif
+
+;IPアドレス書式確認
+IPCHECKCMD = 'echo '
+strconcat IPCHECKCMD IPADDR
+strconcat IPCHECKCMD ' | egrep "^(([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([1-9]?[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"'
+sendln IPCHECKCMD
+waitregex wait_str
+sendln 'echo $?'
+recvln
+recvln
+strmatch inputstr '0'
+if result = 0 then
+    messagebox 'IPアドレス以外が入力された可能性があります' 'エラー'
+    sendln 'exit'
+    end
+endif
+
+;PING疎通確認
+PINGCMD = 'ping -t 3 -c 3 '
+strconcat PINGCMD IPADDR
+strconcat PINGCMD ' &>/dev/null'
+sendln PINGCMD
+pause 5
+waitregex wait_str
+sendln 'echo $?'
+recvln
+recvln
+strmatch inputstr '0'
+if result = 0 then
+    messagebox 'PING疎通確認に失敗しました' 'NG'
+elseif result = 1 then
+    messagebox 'PING疎通確認に成功しました' 'OK'
+endif
+
+;マクロ終了
+sendln 'exit'
+end
