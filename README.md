@@ -24,10 +24,10 @@ IPアドレスをコロコロ変える必要があるとき楽ちんにするや
 ### ipaddr_show.bat
 ケーブル刺さってない状態でIPアドレスの設定確認するやつ
 
-#### Ping.ttl
+### Ping.ttl
 サーバからPINGしたいときに一般人でも扱いやすくするやつ
 
-#### Proxy.ttl
+### Proxy.ttl
 サーバ経由でないと繋がらない機器のWebGUIに繋ぐやつ
 
 ### ymnolimit.py
